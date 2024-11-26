@@ -8,9 +8,9 @@ import com.luv2code.exchange.repository.CurrencyRepository;
 import com.luv2code.exchange.repository.ExchangeRepository;
 import com.luv2code.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +52,7 @@ public class ExchangeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
 
         Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
@@ -60,5 +61,14 @@ public class ExchangeService {
         exchange.changeStatusCancelled();
 
         return new UpdateResponseDto(exchange);
+    }
+
+    @Transactional
+    public void deleteUser(RequestDto dto) {
+
+        User user = userRepository.findById(dto.getUserId()).orElseThrow(()-> new RuntimeException("해당아이디없음."));
+
+        userRepository.deleteById(user.getId());
+
     }
 }
