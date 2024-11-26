@@ -42,4 +42,12 @@ public class Exchange extends BaseEntity {
     public Exchange() {
 
     }
+
+    public Exchange(Double amountInKrw, Double amountAfterExchange, ExchangeStatus status, User user, Currency currency) {
+        this.amountInKrw = amountInKrw;
+        this.amountAfterExchange = amountAfterExchange;
+        this.status = status;
+        this.user = user;
+        this.currency = currency;
+    }
 }

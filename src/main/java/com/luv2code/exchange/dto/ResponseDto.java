@@ -1,5 +1,6 @@
 package com.luv2code.exchange.dto;
 
+import com.luv2code.exchange.entity.Exchange;
 import lombok.Getter;
 
 @Getter
@@ -21,5 +22,13 @@ public class ResponseDto {
         this.amountInKrw = amountInKrw;
         this.amountAfterExchange = amountAfterExchange;
         this.status = status;
+    }
+
+    public ResponseDto(Exchange exchange) {
+        this.userId = exchange.getUser().getId();
+        this.currencyId = exchange.getCurrency().getId();
+        this.amountInKrw = exchange.getAmountInKrw();
+        this.amountAfterExchange = exchange.getAmountAfterExchange();
+        this.status = exchange.getStatus().name();
     }
 }
