@@ -1,11 +1,8 @@
 package com.luv2code.exchange.controller;
 
-import com.luv2code.exchange.dto.ExchangeRequestDto;
-import com.luv2code.exchange.dto.RequestDto;
-import com.luv2code.exchange.dto.ResponseDto;
+import com.luv2code.exchange.dto.*;
 import com.luv2code.exchange.service.ExchangeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,5 +24,11 @@ public class ExchangeController {
     public List<ResponseDto> findExchangeListByUserId(@RequestBody RequestDto dto) {
 
         return exchangeService.getExchangeList(dto);
+    }
+
+    @PutMapping
+    public UpdateResponseDto updateStatus(@RequestBody UpdateRequestDto dto) {
+
+        return exchangeService.updateStatus(dto);
     }
 }

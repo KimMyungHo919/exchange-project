@@ -50,4 +50,8 @@ public class Exchange extends BaseEntity {
         this.user = user;
         this.currency = currency;
     }
+
+    public void changeStatusCancelled() {
+        this.status = ExchangeStatus.CANCELLED;
+    }
 }

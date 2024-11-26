@@ -1,8 +1,6 @@
 package com.luv2code.exchange.service;
 
-import com.luv2code.exchange.dto.ExchangeRequestDto;
-import com.luv2code.exchange.dto.RequestDto;
-import com.luv2code.exchange.dto.ResponseDto;
+import com.luv2code.exchange.dto.*;
 import com.luv2code.exchange.entity.Currency;
 import com.luv2code.exchange.entity.Exchange;
 import com.luv2code.exchange.entity.User;
@@ -52,5 +50,15 @@ public class ExchangeService {
         return exchanges.stream().map(
                 exchange -> new ResponseDto(exchange))
                 .collect(Collectors.toList());
+    }
+
+    public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
+
+        Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
+                .orElseThrow(() -> new RuntimeException("해당아이디없음."));
+
+        exchange.changeStatusCancelled();
+
+        return new UpdateResponseDto(exchange);
     }
 }
