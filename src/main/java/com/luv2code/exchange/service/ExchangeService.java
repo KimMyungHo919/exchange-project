@@ -1,6 +1,7 @@
 package com.luv2code.exchange.service;
 
 import com.luv2code.exchange.dto.ExchangeRequestDto;
+import com.luv2code.exchange.dto.RequestDto;
 import com.luv2code.exchange.dto.ResponseDto;
 import com.luv2code.exchange.entity.Currency;
 import com.luv2code.exchange.entity.Exchange;
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +40,17 @@ public class ExchangeService {
         Exchange result = exchangeRepository.save(exchange);
 
         return new ResponseDto(result);
+    }
+
+    public List<ResponseDto> getExchangeList(RequestDto dto) {
+
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(()->new RuntimeException("해당아이디없음."));
+
+        List<Exchange> exchanges = exchangeRepository.findByUser(user);
+
+        return exchanges.stream().map(
+                exchange -> new ResponseDto(exchange))
+                .collect(Collectors.toList());
     }
 }
