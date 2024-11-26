@@ -4,14 +4,13 @@ import com.luv2code.exchange.dto.*;
 import com.luv2code.exchange.entity.Currency;
 import com.luv2code.exchange.entity.Exchange;
 import com.luv2code.exchange.entity.User;
+import com.luv2code.exchange.error.UserNotFoundException;
 import com.luv2code.exchange.repository.CurrencyRepository;
 import com.luv2code.exchange.repository.ExchangeRepository;
 import com.luv2code.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +25,10 @@ public class ExchangeService {
     public ResponseDto saveExchangeRequest(ExchangeRequestDto dto) {
 
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new RuntimeException("해당아이디없음."));
+                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         Currency currency = currencyRepository.findById(dto.getCurrencyId())
-                .orElseThrow(()->new RuntimeException("해당아이피없음."));
+                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         Double exchangeAmount = dto.getAmountInKrw() / currency.getExchangeRate();
 
@@ -43,7 +42,7 @@ public class ExchangeService {
     public List<ResponseDto> getExchangeList(RequestDto dto) {
 
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new RuntimeException("해당아이디없음."));
+                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         List<Exchange> exchanges = exchangeRepository.findByUser(user);
 
@@ -56,7 +55,7 @@ public class ExchangeService {
     public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
 
         Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
-                .orElseThrow(() -> new RuntimeException("해당아이디없음."));
+                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         exchange.changeStatusCancelled();
 
@@ -66,7 +65,8 @@ public class ExchangeService {
     @Transactional
     public void deleteUser(RequestDto dto) {
 
-        User user = userRepository.findById(dto.getUserId()).orElseThrow(()-> new RuntimeException("해당아이디없음."));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         userRepository.deleteById(user.getId());
 
