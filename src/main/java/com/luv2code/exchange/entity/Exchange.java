@@ -2,6 +2,7 @@ package com.luv2code.exchange.entity;
 
 import com.luv2code.exchange.base.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
@@ -20,8 +21,15 @@ public class Exchange extends BaseEntity {
     @Column(name = "amount_after_exchange")
     private Double amountAfterExchange;
 
-    @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "ENUM('NORMAL', 'CANCELLED')")
+    @NotNull
+    private ExchangeStatus status;
+
+    public enum ExchangeStatus {
+        NORMAL, // 요청중상태
+        CANCELLED // 친구상태
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id")
