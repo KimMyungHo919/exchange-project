@@ -43,8 +43,8 @@ public class ExchangeService {
         return new ResponseDto(result);
     }
 
-    public List<ResponseDto> getExchangeList(RequestDto dto) {
-        User user = userRepository.findById(dto.getUserId())
+    public List<ResponseDto> getExchangeList(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         List<Exchange> exchanges = exchangeRepository.findByUser(user);
@@ -54,17 +54,17 @@ public class ExchangeService {
                 .collect(Collectors.toList());
     }
 
-    public List<ExchangeSummaryResponseDto> getExchangeSummaryList(RequestDto dto) {
-        if (exchangeRepository.getExchangeSummaryByUser(dto.getUserId()).isEmpty()) {
+    public List<ExchangeSummaryResponseDto> getExchangeSummaryList(Long userId) {
+        if (exchangeRepository.getExchangeSummaryByUser(userId).isEmpty()) {
             throw new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요.");
         }
 
-        return exchangeRepository.getExchangeSummaryByUser(dto.getUserId());
+        return exchangeRepository.getExchangeSummaryByUser(userId);
     }
 
     @Transactional
-    public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
-        Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
+    public UpdateResponseDto updateStatus(Long exchangeId) {
+        Exchange exchange = exchangeRepository.findById(exchangeId)
                 .orElseThrow(()->new UserNotFoundException("Exchange ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         exchange.changeStatusCancelled();
@@ -73,8 +73,8 @@ public class ExchangeService {
     }
 
     @Transactional
-    public void deleteUser(RequestDto dto) {
-        User user = userRepository.findById(dto.getUserId())
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         userRepository.deleteById(user.getId());

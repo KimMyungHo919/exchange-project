@@ -20,24 +20,24 @@ public class ExchangeController {
         return exchangeService.saveExchangeRequest(dto);
     }
 
-    @GetMapping
-    public List<ResponseDto> findExchangeListByUserId(@RequestBody RequestDto dto) {
-        return exchangeService.getExchangeList(dto);
+    @GetMapping("/{userId}")
+    public List<ResponseDto> findExchangeListByUserId(@PathVariable Long userId) {
+        return exchangeService.getExchangeList(userId);
     }
 
-    @GetMapping("/summaries")
-    public List<ExchangeSummaryResponseDto> findExchangeSummaryList(@RequestBody RequestDto dto) {
-        return exchangeService.getExchangeSummaryList(dto);
+    @GetMapping("/summaries/{userId}")
+    public List<ExchangeSummaryResponseDto> findExchangeSummaryList(@PathVariable Long userId) {
+        return exchangeService.getExchangeSummaryList(userId);
     }
 
-    @PutMapping
-    public UpdateResponseDto updateStatus(@RequestBody UpdateRequestDto dto) {
-        return exchangeService.updateStatus(dto);
+    @PutMapping("/{exchangeId}")
+    public UpdateResponseDto updateStatus(@PathVariable Long exchangeId) {
+        return exchangeService.updateStatus(exchangeId);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody RequestDto dto) {
-        exchangeService.deleteUser(dto);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        exchangeService.deleteUser(userId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
