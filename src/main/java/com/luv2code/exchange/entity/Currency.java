@@ -3,7 +3,6 @@ package com.luv2code.exchange.entity;
 import com.luv2code.exchange.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-
 import java.math.BigDecimal;
 import java.util.List;
 

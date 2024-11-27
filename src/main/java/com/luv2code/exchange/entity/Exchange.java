@@ -4,7 +4,6 @@ import com.luv2code.exchange.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-
 import java.math.BigDecimal;
 
 @Getter

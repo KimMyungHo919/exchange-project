@@ -1,7 +1,6 @@
 package com.luv2code.exchange.dto;
 
 import lombok.Getter;
-
 import java.math.BigDecimal;
 
 @Getter

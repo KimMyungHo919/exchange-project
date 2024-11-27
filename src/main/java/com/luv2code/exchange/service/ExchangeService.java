@@ -11,7 +11,6 @@ import com.luv2code.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -56,6 +55,10 @@ public class ExchangeService {
     }
 
     public List<ExchangeSummaryResponseDto> getExchangeSummaryList(RequestDto dto) {
+        if (exchangeRepository.getExchangeSummaryByUser(dto.getUserId()).isEmpty()) {
+            throw new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요.");
+        }
+
         return exchangeRepository.getExchangeSummaryByUser(dto.getUserId());
     }
 
