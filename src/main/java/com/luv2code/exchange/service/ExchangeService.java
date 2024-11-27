@@ -11,6 +11,9 @@ import com.luv2code.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +33,10 @@ public class ExchangeService {
         Currency currency = currencyRepository.findById(dto.getCurrencyId())
                 .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
-        Double exchangeAmount = dto.getAmountInKrw() / currency.getExchangeRate();
+        BigDecimal amountInKrw = dto.getAmountInKrw();
+        BigDecimal exchangeRate = currency.getExchangeRate();
+
+        BigDecimal exchangeAmount = amountInKrw.divide(exchangeRate, 2, RoundingMode.HALF_UP);
 
         Exchange exchange = new Exchange(dto.getAmountInKrw(),exchangeAmount, Exchange.ExchangeStatus.NORMAL,user,currency);
 

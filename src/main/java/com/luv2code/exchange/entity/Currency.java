@@ -4,6 +4,7 @@ import com.luv2code.exchange.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Currency extends BaseEntity {
     private Long id;
 
     @Column(name = "exchange_rate")
-    private double exchangeRate;
+    private BigDecimal exchangeRate;
 
     @Column(name = "currency_name")
     private String currencyName;

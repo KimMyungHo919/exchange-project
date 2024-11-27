@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Table(name = "exchange")
 @Entity
@@ -16,10 +18,10 @@ public class Exchange extends BaseEntity {
     private Long id;
 
     @Column(name = "amount_in_krw")
-    private Double amountInKrw;
+    private BigDecimal amountInKrw;
 
     @Column(name = "amount_after_exchange")
-    private Double amountAfterExchange;
+    private BigDecimal amountAfterExchange;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "ENUM('NORMAL', 'CANCELLED')")
@@ -43,7 +45,7 @@ public class Exchange extends BaseEntity {
 
     }
 
-    public Exchange(Double amountInKrw, Double amountAfterExchange, ExchangeStatus status, User user, Currency currency) {
+    public Exchange(BigDecimal amountInKrw, BigDecimal amountAfterExchange, ExchangeStatus status, User user, Currency currency) {
         this.amountInKrw = amountInKrw;
         this.amountAfterExchange = amountAfterExchange;
         this.status = status;
