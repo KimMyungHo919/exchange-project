@@ -26,6 +26,11 @@ public class ExchangeController {
         return exchangeService.getExchangeList(dto);
     }
 
+    @GetMapping("/summaries")
+    public List<ExchangeSummaryResponseDto> findExchangeSummaryList(@RequestBody RequestDto dto) {
+        return exchangeService.getExchangeSummaryList(dto);
+    }
+
     @PutMapping
     public UpdateResponseDto updateStatus(@RequestBody UpdateRequestDto dto) {
         return exchangeService.updateStatus(dto);

@@ -55,6 +55,10 @@ public class ExchangeService {
                 .collect(Collectors.toList());
     }
 
+    public List<ExchangeSummaryResponseDto> getExchangeSummaryList(RequestDto dto) {
+        return exchangeRepository.getExchangeSummaryByUser(dto.getUserId());
+    }
+
     @Transactional
     public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
         Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
