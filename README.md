@@ -1,13 +1,13 @@
 # 환전 API 명세서
 
 ## 환전 API
-| 기능     | 메서드    | URL                          | 요청형식 | 응답형식 | 상태코드      
-|--------|--------|------------------------------|----|------|-----------|
-환전등록   | POST   | /exchanges               | json | json | 200: Ok , 404: Not found
-환전 전체목록 찾기 | GET    | /exchanges               | json   | json | 200: Ok , 404: Not found
-환전 총 횟수찾기 | GET    | /exchanges/summaries | json   | json | 200: Ok , 404: Not found
-환전상태 수정   | PUT    | /exchanges | json | json | 200: Ok , 404: Not found
-유저정보 삭제   | DELETE | /exchanges | json | X    | 200: Ok , 404: Not found
+| 기능     | 메서드    | URL                           | 요청형식 | 응답형식 | 상태코드      
+|--------|--------|-------------------------------|----|------|-----------|
+환전등록   | POST   | /exchanges                    | json | json | 200: Ok , 404: Not found
+환전 전체목록 찾기 | GET    | /exchanges/{userId}           | X   | json | 200: Ok , 404: Not found
+환전 총 횟수찾기 | GET    | /exchanges/summaries/{userId} | X   | json | 200: Ok , 404: Not found
+환전상태 수정   | PUT    | /exchanges/{exchangeId}       | X | json | 200: Ok , 404: Not found
+유저정보 삭제   | DELETE | /exchanges/{userId}           | X | X    | 200: Ok , 404: Not found
 
 
 ## 1. POST
@@ -35,17 +35,11 @@ POST /exchanges
 
 ## 2. GET
 ```
-GET /exchanges      // 유저의 모든 환전 정보 찾기
+GET /exchanges/{userId}      // 유저의 모든 환전 정보 찾기
 
-GET /exchanges/summaries  // 유저의 총 환전금액 찾기
+GET /exchanges/summaries/{userId}   // 유저의 총 환전금액 찾기
 ```
-### 2-1 환전 조회 요청예시 (위 두개모두 같은형식)
-```
-{
-    "userId" : 1               // 유저아이디
-}
-```
-### 2-2 환전 전체 조회 응답예시
+### 2-1 환전 전체 조회 응답예시
 ```
 [
     {
@@ -66,7 +60,7 @@ GET /exchanges/summaries  // 유저의 총 환전금액 찾기
     }
 ]
 ```
-### 2-3 환전횟수 찾기 응답예시
+### 2-2 환전횟수 찾기 응답예시
 ```
 [
     {
@@ -81,10 +75,7 @@ GET /exchanges/summaries  // 유저의 총 환전금액 찾기
 
 ### 3-1 환전상태수정 요청 예시
 ```
-PUT /exchanges
-{
-    "exchangeId" : 1
-}
+PUT /exchanges/{exchangeId}
 ```
 ### 3-2 환전상태수정 응답 예시
 ```
@@ -98,10 +89,7 @@ PUT /exchanges
 ## 4. DELETE
 ### 4-1 환전 유저 삭제 요청예시
 ```
-DELETE /exchanges
-{
-    "userId" : 1
-}     
+DELETE /exchanges/{userId}
 ```
 
 # ERD
