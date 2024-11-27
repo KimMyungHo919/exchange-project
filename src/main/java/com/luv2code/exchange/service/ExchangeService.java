@@ -27,10 +27,10 @@ public class ExchangeService {
 
     public ResponseDto saveExchangeRequest(ExchangeRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         Currency currency = currencyRepository.findById(dto.getCurrencyId())
-                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(()->new UserNotFoundException("Currency ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         BigDecimal amountInKrw = dto.getAmountInKrw();
         BigDecimal exchangeRate = currency.getExchangeRate();
@@ -46,7 +46,7 @@ public class ExchangeService {
 
     public List<ResponseDto> getExchangeList(RequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         List<Exchange> exchanges = exchangeRepository.findByUser(user);
 
@@ -62,7 +62,7 @@ public class ExchangeService {
     @Transactional
     public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
         Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
-                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(()->new UserNotFoundException("Exchange ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         exchange.changeStatusCancelled();
 
@@ -72,7 +72,7 @@ public class ExchangeService {
     @Transactional
     public void deleteUser(RequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
         userRepository.deleteById(user.getId());
 
