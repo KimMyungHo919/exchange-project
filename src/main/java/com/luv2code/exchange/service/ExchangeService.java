@@ -26,7 +26,6 @@ public class ExchangeService {
     private final UserRepository userRepository;
 
     public ResponseDto saveExchangeRequest(ExchangeRequestDto dto) {
-
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
@@ -46,7 +45,6 @@ public class ExchangeService {
     }
 
     public List<ResponseDto> getExchangeList(RequestDto dto) {
-
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
@@ -59,7 +57,6 @@ public class ExchangeService {
 
     @Transactional
     public UpdateResponseDto updateStatus(UpdateRequestDto dto) {
-
         Exchange exchange = exchangeRepository.findById(dto.getExchangeId())
                 .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 
@@ -70,7 +67,6 @@ public class ExchangeService {
 
     @Transactional
     public void deleteUser(RequestDto dto) {
-
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(()->new UserNotFoundException("ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
 

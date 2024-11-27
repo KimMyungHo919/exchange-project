@@ -18,25 +18,21 @@ public class ExchangeController {
 
     @PostMapping
     public ResponseDto createExchangeRequest(@RequestBody ExchangeRequestDto dto) {
-
         return exchangeService.saveExchangeRequest(dto);
     }
 
     @GetMapping
     public List<ResponseDto> findExchangeListByUserId(@RequestBody RequestDto dto) {
-
         return exchangeService.getExchangeList(dto);
     }
 
     @PutMapping
     public UpdateResponseDto updateStatus(@RequestBody UpdateRequestDto dto) {
-
         return exchangeService.updateStatus(dto);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(@RequestBody RequestDto dto) {
-
         exchangeService.deleteUser(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
