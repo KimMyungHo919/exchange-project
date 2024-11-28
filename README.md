@@ -3,7 +3,7 @@
 ## 환전 API
 | 기능     | 메서드    | URL                           | 요청형식 | 응답형식 | 상태코드      
 |--------|--------|-------------------------------|----|------|-----------|
-환전등록   | POST   | /exchanges                    | json | json | 200: Ok , 404: Not found
+환전등록   | POST   | /exchanges                    | json | json | 201: Created , 404: Not found
 환전 전체목록 찾기 | GET    | /exchanges/{userId}           | X   | json | 200: Ok , 404: Not found
 환전 총 횟수찾기 | GET    | /exchanges/summaries/{userId} | X   | json | 200: Ok , 404: Not found
 환전상태 수정   | PUT    | /exchanges/{exchangeId}       | X | json | 200: Ok , 404: Not found
