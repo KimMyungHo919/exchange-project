@@ -24,6 +24,7 @@ POST /exchanges
 ### 1-2 환전 등록 응답예시
 ```
 {
+    "id": 5,
     "userId": 1,
     "currencyId": 2,
     "amountInKrw": 9170,
@@ -43,6 +44,7 @@ GET /exchanges/summaries/{userId}   // 유저의 총 환전금액 찾기
 ```
 [
     {
+        "id": 5,                           // 환전 고유아이디
         "userId": 1,                       // 유저아이디
         "currencyId": 2,                   // 통화단위
         "amountInKrw": 9170.00,            // 원하는 환전금액
@@ -51,6 +53,7 @@ GET /exchanges/summaries/{userId}   // 유저의 총 환전금액 찾기
         "status": "NORMAL"                 // 상태
     },
     {
+        "id": 5,
         "userId": 1,
         "currencyId": 2,
         "amountInKrw": 9170.00,
