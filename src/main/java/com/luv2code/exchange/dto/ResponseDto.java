@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 public class ResponseDto {
 
     @NotNull
+    private Long id;
+
+    @NotNull
     private Long userId;
 
     @NotNull
@@ -32,6 +35,7 @@ public class ResponseDto {
     private String status;
 
     public ResponseDto(Exchange exchange) {
+        this.id = exchange.getId();
         this.userId = exchange.getUser().getId();
         this.currencyId = exchange.getCurrency().getId();
         this.amountInKrw = exchange.getAmountInKrw();

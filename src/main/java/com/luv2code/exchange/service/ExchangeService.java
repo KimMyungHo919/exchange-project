@@ -4,6 +4,7 @@ import com.luv2code.exchange.dto.*;
 import com.luv2code.exchange.entity.Currency;
 import com.luv2code.exchange.entity.Exchange;
 import com.luv2code.exchange.entity.User;
+import com.luv2code.exchange.error.DataNotFoundException;
 import com.luv2code.exchange.error.UserNotFoundException;
 import com.luv2code.exchange.repository.CurrencyRepository;
 import com.luv2code.exchange.repository.ExchangeRepository;
@@ -26,10 +27,10 @@ public class ExchangeService {
 
     public ResponseDto saveExchangeRequest(ExchangeRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(UserNotFoundException::new);
 
         Currency currency = currencyRepository.findById(dto.getCurrencyId())
-                .orElseThrow(()->new UserNotFoundException("Currency ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(UserNotFoundException::new);
 
         BigDecimal amountInKrw = dto.getAmountInKrw();
         BigDecimal exchangeRate = currency.getExchangeRate();
@@ -45,18 +46,25 @@ public class ExchangeService {
 
     public List<ResponseDto> getExchangeList(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(UserNotFoundException::new);
 
         List<Exchange> exchanges = exchangeRepository.findByUser(user);
 
-        return exchanges.stream().map(
-                exchange -> new ResponseDto(exchange))
+        if (exchanges.isEmpty()) {
+            throw new DataNotFoundException();
+        }
+
+        return exchanges.stream().map(ResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     public List<ExchangeSummaryResponseDto> getExchangeSummaryList(Long userId) {
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new UserNotFoundException();
+        }
+
         if (exchangeRepository.getExchangeSummaryByUser(userId).isEmpty()) {
-            throw new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요.");
+            throw new DataNotFoundException();
         }
 
         return exchangeRepository.getExchangeSummaryByUser(userId);
@@ -65,7 +73,7 @@ public class ExchangeService {
     @Transactional
     public UpdateResponseDto updateStatus(Long exchangeId) {
         Exchange exchange = exchangeRepository.findById(exchangeId)
-                .orElseThrow(()->new UserNotFoundException("Exchange ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(UserNotFoundException::new);
 
         exchange.changeStatusCancelled();
 
@@ -75,7 +83,7 @@ public class ExchangeService {
     @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new UserNotFoundException("User ID를 찾을 수 없습니다. ID를 다시 확인해주세요."));
+                .orElseThrow(UserNotFoundException::new);
 
         userRepository.deleteById(user.getId());
 

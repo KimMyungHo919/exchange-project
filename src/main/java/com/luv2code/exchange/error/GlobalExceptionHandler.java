@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler
-    public ResponseEntity<ExchangeErrorResponse> handleException(UserNotFoundException exception) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ExchangeErrorResponse> handleException(CustomException exception) {
 
-        ExchangeErrorResponse error = new ExchangeErrorResponse();
-
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setMessage(exception.getMessage());
-        error.setTimeStamp(System.currentTimeMillis());
+        ExchangeErrorResponse error = new ExchangeErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                System.currentTimeMillis()
+        );
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
