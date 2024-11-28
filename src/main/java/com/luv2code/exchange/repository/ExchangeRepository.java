@@ -17,7 +17,7 @@ public interface ExchangeRepository extends JpaRepository<Exchange, Long> {
     @Query("SELECT new com.luv2code.exchange.dto.ExchangeSummaryResponseDto(" +
             "e.user.id, COUNT(e), SUM(e.amountInKrw)) " +
             "FROM Exchange e " +
-            "WHERE e.user.id = :userId " +
+            "WHERE e.user.id = :userId AND e.status = 'NORMAL' " +
             "GROUP BY e.user")
     List<ExchangeSummaryResponseDto> getExchangeSummaryByUser(@Param("userId") Long userId);
 }
