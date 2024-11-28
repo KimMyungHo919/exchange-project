@@ -28,8 +28,8 @@ public class Exchange extends BaseEntity {
     private ExchangeStatus status;
 
     public enum ExchangeStatus {
-        NORMAL, // 요청중상태
-        CANCELLED // 친구상태
+        NORMAL,
+        CANCELLED
     }
 
     @ManyToOne
