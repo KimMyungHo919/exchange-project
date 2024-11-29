@@ -22,15 +22,15 @@ public class ExchangeController {
     }
 
     // 환전 목록 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<ResponseDto>> findExchangeListByUserId(@PathVariable Long userId) {
-        return new ResponseEntity<>(exchangeService.getExchangeList(userId), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<ResponseDto>> findExchangeListByUserId(@RequestBody RequestDto dto) {
+        return new ResponseEntity<>(exchangeService.getExchangeList(dto.getUserId()), HttpStatus.OK);
     }
 
     // 사용자의 환전 요약 정보를 조회 (userId, 총 환전횟수, 총 환전금액)
-    @GetMapping("/summaries/{userId}")
-    public ResponseEntity<List<ExchangeSummaryResponseDto>> findExchangeSummaryList(@PathVariable Long userId) {
-        return new ResponseEntity<>(exchangeService.getExchangeSummaryList(userId), HttpStatus.OK);
+    @GetMapping("/summary")
+    public ResponseEntity<List<ExchangeSummaryResponseDto>> findExchangeSummaryList(@RequestBody RequestDto dto) {
+        return new ResponseEntity<>(exchangeService.getExchangeSummaryList(dto.getUserId()), HttpStatus.OK);
     }
 
     // 환전 상태를 취소로 업데이트
@@ -40,9 +40,9 @@ public class ExchangeController {
     }
 
     // 사용자를 삭제
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        exchangeService.deleteUser(userId);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@RequestBody RequestDto dto) {
+        exchangeService.deleteUser(dto.getUserId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
