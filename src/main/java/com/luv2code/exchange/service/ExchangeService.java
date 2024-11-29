@@ -4,8 +4,8 @@ import com.luv2code.exchange.dto.*;
 import com.luv2code.exchange.entity.Currency;
 import com.luv2code.exchange.entity.Exchange;
 import com.luv2code.exchange.entity.User;
-import com.luv2code.exchange.error.DataNotFoundException;
-import com.luv2code.exchange.error.UserNotFoundException;
+import com.luv2code.exchange.error.CustomException;
+import com.luv2code.exchange.error.ExceptionType;
 import com.luv2code.exchange.repository.CurrencyRepository;
 import com.luv2code.exchange.repository.ExchangeRepository;
 import com.luv2code.exchange.repository.UserRepository;
@@ -30,14 +30,14 @@ public class ExchangeService {
      *
      * @param dto 환전 요청에 대한 데이터
      * @return ResponseDto
-     * @throws UserNotFoundException 해당아이디의 유저가 없을경우 발생
+     * @throws CustomException 해당아이디의 유저가 없을경우 발생
      */
     public ResponseDto saveExchangeRequest(ExchangeRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomException(ExceptionType.USER_NOT_FOUND));
 
         Currency currency = currencyRepository.findById(dto.getCurrencyId())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomException(ExceptionType.USER_NOT_FOUND));
 
         BigDecimal amountInKrw = dto.getAmountInKrw();
         BigDecimal exchangeRate = currency.getExchangeRate();
@@ -56,17 +56,16 @@ public class ExchangeService {
      *
      * @param userId User 고유 ID
      * @return ResponseDto 리스트
-     * @throws DataNotFoundException 환전 기록이 존재하지 않는 경우 발생
-     * @throws UserNotFoundException 사용자가 존재하지 않는 경우 발생
+     * @throws CustomException 환전 기록이 존재하지 않는 경우 발생
      */
     public List<ResponseDto> getExchangeList(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomException(ExceptionType.USER_NOT_FOUND));
 
         List<Exchange> exchanges = exchangeRepository.findByUser(user);
 
         if (exchanges.isEmpty()) {
-            throw new DataNotFoundException();
+            throw new CustomException(ExceptionType.USER_NOT_FOUND);
         }
 
         return exchanges.stream().map(ResponseDto::new)
@@ -78,16 +77,16 @@ public class ExchangeService {
      *
      * @param userId User 고유 ID
      * @return ExchangeSummaryResponseDto 리스트
-     * @throws UserNotFoundException 사용자가 존재하지 않는 경우 발생
-     * @throws DataNotFoundException 환전 요약 정보가 존재하지 않는 경우 발생
+     * @throws CustomException 사용자가 존재하지 않는 경우 발생
+     * @throws CustomException 환전 요약 정보가 존재하지 않는 경우 발생
      */
     public List<ExchangeSummaryResponseDto> getExchangeSummaryList(Long userId) {
         if (userRepository.findById(userId).isEmpty()) {
-            throw new UserNotFoundException();
+            throw new CustomException(ExceptionType.USER_NOT_FOUND);
         }
 
         if (exchangeRepository.getExchangeSummaryByUser(userId).isEmpty()) {
-            throw new DataNotFoundException();
+            throw new CustomException(ExceptionType.FILE_NOT_FOUND);
         }
 
         return exchangeRepository.getExchangeSummaryByUser(userId);
@@ -98,12 +97,12 @@ public class ExchangeService {
      *
      * @param exchangeId 환전 고유 ID
      * @return UpdateResponseDto
-     * @throws UserNotFoundException 환전 ID에 해당하는 환전 정보가 존재하지 않는 경우 발생
+     * @throws CustomException 환전 ID에 해당하는 환전 정보가 존재하지 않는 경우 발생
      */
     @Transactional
     public UpdateResponseDto updateStatus(Long exchangeId) {
         Exchange exchange = exchangeRepository.findById(exchangeId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomException(ExceptionType.USER_NOT_FOUND));
 
         exchange.changeStatusCancelled();
 
@@ -114,12 +113,12 @@ public class ExchangeService {
      * 사용자를 삭제
      *
      * @param userId User 고유 ID
-     * @throws UserNotFoundException 사용자가 존재하지 않는 경우 발생
+     * @throws CustomException 사용자가 존재하지 않는 경우 발생
      */
     @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomException(ExceptionType.USER_NOT_FOUND));
 
         userRepository.deleteById(user.getId());
     }
